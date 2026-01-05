@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.pagination import LimitOffsetPagination
 
 from cinema.models import (
     Genre,
@@ -90,6 +91,11 @@ class MovieSessionListSerializer(MovieSessionSerializer):
         return total_seats - taken_count
 
 
+class OrdersPagination(LimitOffsetPagination):
+    default_limit = 2
+    max_limit = 5
+
+
 class MovieSessionDetailSerializer(MovieSessionSerializer):
     movie = MovieListSerializer(many=False, read_only=True)
     cinema_hall = CinemaHallSerializer(many=False, read_only=True)
@@ -97,7 +103,7 @@ class MovieSessionDetailSerializer(MovieSessionSerializer):
 
     class Meta:
         model = MovieSession
-        fields = ("id", "show_time", "movie", "cinema_hall", "taken_seats")
+        fields = ("id", "show_time", "movie", "cinema_hall", "taken_places")
 
     def get_taken_seats(self, obj):
         tickets = obj.tickets.all()  # uses related_name="tickets"

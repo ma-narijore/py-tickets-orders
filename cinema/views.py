@@ -24,7 +24,7 @@ from cinema.serializers import (
     MovieSessionDetailSerializer,
     MovieListSerializer,
     OrderCreateSerializer,
-    OrderListSerializer,
+    OrderListSerializer, OrdersPagination,
 )
 
 
@@ -138,6 +138,7 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
 
 class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
+    pagination_class = OrdersPagination
 
     def get_queryset(self):
         # Prefetch related objects to avoid N+1
